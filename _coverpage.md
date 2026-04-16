@@ -9,4 +9,4 @@
 - Search, syntax highlighting & embeds built in
 
 [Get Started](#my-project)
-[GitHub](https://github.com/YOUR-USERNAME/YOUR-REPO)
+[GitHub](https://github.com/hanopav/test-project)
