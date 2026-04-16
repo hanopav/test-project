@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Project Docs</title>
+
+  <!-- Docsify theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" />
+
+  <style>
+    :root {
+      --theme-color: #2563eb;
+      --base-font-size: 16px;
+      --base-line-height: 1.7;
+      --base-font-family: 'Georgia', serif;
+      --heading-font-weight: 700;
+      --cover-background-color: #0f172a;
+      --cover-color: #f8fafc;
+    }
+
+    /* Sidebar tweaks */
+    .sidebar {
+      background: #f8fafc;
+      border-right: 1px solid #e2e8f0;
+    }
+
+    .sidebar ul li a {
+      font-family: 'Georgia', serif;
+    }
+
+    /* Cover page */
+    section.cover h1 {
+      font-size: 3rem;
+      letter-spacing: -1px;
+    }
+
+    section.cover .cover-main > p:last-child a {
+      background: #2563eb;
+      border-radius: 6px;
+      padding: 0.6em 1.4em;
+      color: white;
+      text-decoration: none;
+      font-family: monospace;
+      font-size: 1rem;
+      border: none;
+    }
+
+    section.cover .cover-main > p:last-child a:last-child {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+
+    /* Content area */
+    .content {
+      max-width: 780px;
+    }
+
+    .markdown-section h1,
+    .markdown-section h2,
+    .markdown-section h3 {
+      font-family: 'Georgia', serif;
+    }
+
+    .markdown-section h2 {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.3em;
+    }
+
+    .markdown-section code {
+      background: #f1f5f9;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #be185d;
+    }
+
+    .markdown-section pre {
+      background: #0f172a !important;
+      border-radius: 8px;
+    }
+
+    .markdown-section blockquote {
+      border-left: 4px solid #2563eb;
+      background: #eff6ff;
+      border-radius: 0 6px 6px 0;
+      padding: 0.8em 1.2em;
+      color: #1e40af;
+    }
+
+    /* Callout / tip box */
+    .tip {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      padding: 0.8em 1.2em;
+      border-radius: 0 6px 6px 0;
+      margin: 1em 0;
+    }
+
+    /* Embed wrapper */
+    .embed-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 8px;
+      margin: 1.5em 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    .embed-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">Loading docs...</div>
+
+  <script>
+    window.$docsify = {
+      name: '📘 My Project',          // ← Change this to your project name
+      repo: '',                         // ← Add your GitHub repo URL e.g. 'username/repo'
+      loadSidebar: true,
+      loadNavbar: false,
+      coverpage: true,
+      onlyCover: false,
+      auto2top: true,
+      maxLevel: 3,
+      subMaxLevel: 2,
+      search: {
+        placeholder: 'Search docs...',
+        noData: 'No results found.',
+        depth: 3,
+      },
+      copyCode: {
+        buttonText: 'Copy',
+        errorText: 'Error',
+        successText: 'Copied!'
+      },
+      pagination: {
+        previousText: '← Previous',
+        nextText: 'Next →',
+        crossChapter: true,
+      },
+      plugins: []
+    };
+  </script>
+
+  <!-- Docsify core -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+
+  <!-- Plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+
+  <!-- Syntax highlighting -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+</body>
+</html>
