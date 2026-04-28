@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -186,25 +187,22 @@
       stroke-width: 2.5px;
     }
 
-    .cp-krizovy-tooltip {
-      position: fixed !important;
-      pointer-events: none !important;
-      background: rgba(255, 255, 255, 0.98) !important;
-      border: 1px solid #cccccc !important;
-      border-radius: 12px !important;
-      padding: 10px 12px !important;
-      font-size: 13px !important;
-      line-height: 1.35 !important;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18) !important;
-      max-width: 300px !important;
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(255, 255, 255, 0.97);
+      border: 1px solid #cccccc;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.35;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+      max-width: 280px;
       display: none;
-      visibility: visible !important;
-      opacity: 1 !important;
-      z-index: 2147483647 !important;
-      color: #222222 !important;
+      z-index: 10;
     }
 
-    .cp-krizovy-tooltip strong {
+    .tooltip strong {
       display: block;
       margin-bottom: 5px;
       font-size: 13.5px;
@@ -257,7 +255,7 @@
     <div class="header">
       <h2>Hodnocení opatření pro krizovou připravenost</h2>
       <p>
-        Osa X ukazuje náročnost implementace, osa Y přínosnost opatření.
+        Osa X ukazuje náročnost implementace, osa Y přínosnost opatření na škále 0–5.
         Vyšší poloha v grafu znamená vyšší přínos; poloha více vpravo znamená vyšší implementační náročnost.
       </p>
     </div>
@@ -275,14 +273,8 @@
           <span class="filter-label">Náročnost implementace</span>
 
           <div class="range-row">
-            <span>Min.</span>
-            <input id="minNarocnost" type="range" min="1" max="5" step="0.1" value="1" />
-            <strong id="minNarocnostValue">1.0</strong>
-          </div>
-
-          <div class="range-row">
             <span>Max.</span>
-            <input id="maxNarocnost" type="range" min="1" max="5" step="0.1" value="5" />
+            <input id="maxNarocnost" type="range" min="0" max="5" step="0.1" value="5" />
             <strong id="maxNarocnostValue">5.0</strong>
           </div>
         </div>
@@ -291,14 +283,8 @@
           <span class="filter-label">Přínosnost</span>
 
           <div class="range-row">
-            <span>Min.</span>
-            <input id="minPrinosnost" type="range" min="1" max="5" step="0.1" value="1" />
-            <strong id="minPrinosnostValue">1.0</strong>
-          </div>
-
-          <div class="range-row">
             <span>Max.</span>
-            <input id="maxPrinosnost" type="range" min="1" max="5" step="0.1" value="5" />
+            <input id="maxPrinosnost" type="range" min="0" max="5" step="0.1" value="5" />
             <strong id="maxPrinosnostValue">5.0</strong>
           </div>
         </div>
@@ -310,7 +296,7 @@
         <p class="counter" id="counter"></p>
         <div id="chart"></div>
         <div class="legend" id="legend"></div>
-        <div id="cpKrizovyTooltip" class="cp-krizovy-tooltip"></div>
+        <div class="tooltip" id="tooltip"></div>
       </main>
     </div>
   </div>
@@ -393,8 +379,7 @@
         kategorie: "Lokální komunity a leadership",
         opatreni: "Zapojení starostů",
         narocnost: 3.0,
-        prinosnost: 4.2,
-        url: "https://www.ceskepriority.cz/testovaci-stranka#komunity"
+        prinosnost: 4.2
       }
     ];
 
@@ -410,14 +395,12 @@
 
     const state = {
       selectedCategories: new Set(categories),
-      minNarocnost: 1,
       maxNarocnost: 5,
-      minPrinosnost: 1,
       maxPrinosnost: 5
     };
 
     const chartEl = document.getElementById("chart");
-    const tooltip = d3.select("#cpKrizovyTooltip");
+    const tooltip = d3.select("#tooltip");
     const counter = d3.select("#counter");
 
     // ------------------------------------------------------------------
@@ -450,37 +433,20 @@
 
     function bindRange(id, key) {
       const input = document.getElementById(id);
-      const label = document.getElementById(`${id}Value`);
 
       input.addEventListener("input", () => {
         state[key] = Number(input.value);
-
-        // Ošetření nelogických rozsahů: min nemůže být větší než max.
-        if (state.minNarocnost > state.maxNarocnost) {
-          if (key === "minNarocnost") state.maxNarocnost = state.minNarocnost;
-          if (key === "maxNarocnost") state.minNarocnost = state.maxNarocnost;
-        }
-
-        if (state.minPrinosnost > state.maxPrinosnost) {
-          if (key === "minPrinosnost") state.maxPrinosnost = state.minPrinosnost;
-          if (key === "maxPrinosnost") state.minPrinosnost = state.maxPrinosnost;
-        }
-
         syncInputs();
         draw();
       });
     }
 
-    bindRange("minNarocnost", "minNarocnost");
     bindRange("maxNarocnost", "maxNarocnost");
-    bindRange("minPrinosnost", "minPrinosnost");
     bindRange("maxPrinosnost", "maxPrinosnost");
 
     document.getElementById("resetFilters").addEventListener("click", () => {
       state.selectedCategories = new Set(categories);
-      state.minNarocnost = 1;
       state.maxNarocnost = 5;
-      state.minPrinosnost = 1;
       state.maxPrinosnost = 5;
 
       categoryFilters.selectAll("input").property("checked", true);
@@ -490,9 +456,7 @@
 
     function syncInputs() {
       const mappings = [
-        ["minNarocnost", state.minNarocnost],
         ["maxNarocnost", state.maxNarocnost],
-        ["minPrinosnost", state.minPrinosnost],
         ["maxPrinosnost", state.maxPrinosnost]
       ];
 
@@ -511,9 +475,7 @@
     function getFilteredData() {
       return data.filter(d =>
         state.selectedCategories.has(d.kategorie) &&
-        d.narocnost >= state.minNarocnost &&
         d.narocnost <= state.maxNarocnost &&
-        d.prinosnost >= state.minPrinosnost &&
         d.prinosnost <= state.maxPrinosnost
       );
     }
@@ -585,14 +547,14 @@
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
       const x = d3.scaleLinear()
-        .domain([1, 5])
+        .domain([0, 5])
         .range([0, innerWidth]);
 
       const y = d3.scaleLinear()
-        .domain([1, 5])
+        .domain([0, 5])
         .range([innerHeight, 0]);
 
-      const tickValues = [1, 2, 3, 4, 5];
+      const tickValues = [0, 1, 2, 3, 4, 5];
 
       // Grid
       g.append("g")
@@ -642,8 +604,8 @@
 
       // Kvadrantové vodicí linie na hodnotě 3
       g.append("line")
-        .attr("x1", x(3))
-        .attr("x2", x(3))
+        .attr("x1", x(2.5))
+        .attr("x2", x(2.5))
         .attr("y1", 0)
         .attr("y2", innerHeight)
         .attr("stroke", "#999999")
@@ -653,8 +615,8 @@
       g.append("line")
         .attr("x1", 0)
         .attr("x2", innerWidth)
-        .attr("y1", y(3))
-        .attr("y2", y(3))
+        .attr("y1", y(2.5))
+        .attr("y2", y(2.5))
         .attr("stroke", "#999999")
         .attr("stroke-dasharray", "5 5")
         .attr("opacity", 0.55);
@@ -671,12 +633,6 @@
         .attr("stroke", "#ffffff")
         .attr("stroke-width", 1.8)
         .attr("opacity", 0.92)
-
-        .on("click", function(event, d) {
-          if (!d.url) return;
-         window.top.location.href = d.url;
-         })
-        
         .on("mouseenter", function(event, d) {
           points.classed("is-muted", p => p.opatreni !== d.opatreni);
 
@@ -697,9 +653,11 @@
             `);
         })
         .on("mousemove", function(event) {
+          const containerRect = document.querySelector(".chart-card").getBoundingClientRect();
+
           tooltip
-            .style("left", `${event.clientX + 16}px`)
-            .style("top", `${event.clientY + 16}px`);
+            .style("left", `${event.clientX - containerRect.left + 14}px`)
+            .style("top", `${event.clientY - containerRect.top + 14}px`);
         })
         .on("mouseleave", function() {
           points.classed("is-muted", false);
