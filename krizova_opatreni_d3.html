@@ -380,6 +380,7 @@
         opatreni: "Zapojení starostů",
         narocnost: 3.0,
         prinosnost: 4.2
+        url: "https://www.ceskepriority.cz/testovaci-stranka#komunity"
       }
     ];
 
@@ -633,6 +634,12 @@
         .attr("stroke", "#ffffff")
         .attr("stroke-width", 1.8)
         .attr("opacity", 0.92)
+
+        .on("click", function(event, d) {
+          if (!d.url) return;
+            window.top.location.href = d.url;
+        })
+          
         .on("mouseenter", function(event, d) {
           points.classed("is-muted", p => p.opatreni !== d.opatreni);
 
