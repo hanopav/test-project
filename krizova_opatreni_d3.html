@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -197,7 +198,7 @@
       font-size: 13px;
       line-height: 1.35;
       box-shadow: 0 8px 24px rgba(0,0,0,0.16);
-      max-width: 280px;
+      max-width: 360px;
       display: none;
       z-index: 10;
     }
@@ -208,10 +209,18 @@
       font-size: 13.5px;
     }
 
+    .tooltip-note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      max-height: 90px;
+      overflow: hidden;
+    }
+
     .legend {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px 16px;
+      gap: 8px 14px;
       margin-top: 10px;
       font-size: 13px;
       color: var(--muted);
@@ -255,7 +264,7 @@
     <div class="header">
       <h2>Hodnocení opatření pro krizovou připravenost</h2>
       <p>
-        Osa X ukazuje náročnost implementace, osa Y přínosnost opatření na škále 0–5.
+        Osa X ukazuje průměrnou náročnost implementace, osa Y průměrnou přínosnost opatření na škále 0–5.
         Vyšší poloha v grafu znamená vyšší přínos; poloha více vpravo znamená vyšší implementační náročnost.
       </p>
     </div>
@@ -309,80 +318,787 @@
     // Při změně dat stačí upravit tento blok nebo ho nahradit exportem z Excelu/CSV.
 
     const data = [
-      {
-        kategorie: "Vzdělávání a kompetence společnosti",
-        opatreni: "MŠ: návyk, rozhodování, chování",
-        narocnost: 2.5,
-        prinosnost: 1.8
-      },
-      {
-        kategorie: "Vzdělávání a kompetence společnosti",
-        opatreni: "ZŠ: praktické dovednosti",
-        narocnost: 3.0,
-        prinosnost: 3.2
-      },
-      {
-        kategorie: "Vzdělávání a kompetence společnosti",
-        opatreni: "SŠ: povinný předmět k resilienci",
-        narocnost: 4.5,
-        prinosnost: 3.7
-      },
-      {
-        kategorie: "Vzdělávání a kompetence společnosti",
-        opatreni: "VŠ: kredity za DVC / AZ",
-        narocnost: 3.0,
-        prinosnost: 2.6
-      },
-      {
-        kategorie: "Připravenost dospělé populace",
-        opatreni: "Oficiální jednotný online modul",
-        narocnost: 3.0,
-        prinosnost: 3.8
-      },
-      {
-        kategorie: "Připravenost dospělé populace",
-        opatreni: "Pravidelná povinná příprava zaměstnanců",
-        narocnost: 4.0,
-        prinosnost: 4.6
-      },
-      {
-        kategorie: "Připravenost dospělé populace",
-        opatreni: "Cvičení výpadku služeb",
-        narocnost: 4.0,
-        prinosnost: 3.5
-      },
-      {
-        kategorie: "Připravenost dospělé populace",
-        opatreni: "Schopnosti oproti příslibu využití v krizi",
-        narocnost: 4.0,
-        prinosnost: 3.8
-      },
-      {
-        kategorie: "Připravenost dospělé populace",
-        opatreni: "Instrukce při zkoušce sirén",
-        narocnost: 1.5,
-        prinosnost: 2.2
-      },
-      {
-        kategorie: "Lokální komunity a leadership",
-        opatreni: "Uvolnění pro komunitní práci",
-        narocnost: 4.5,
-        prinosnost: 3.7
-      },
-      {
-        kategorie: "Lokální komunity a leadership",
-        opatreni: "Zapojení lokálních specifických skupin",
-        narocnost: 3.5,
-        prinosnost: 4.2
-      },
-      {
-        kategorie: "Lokální komunity a leadership",
-        opatreni: "Zapojení starostů",
-        narocnost: 3.0,
-        prinosnost: 4.2,
-        url: "https://www.ceskepriority.cz/testovaci-stranka#komunity"
-      }
-    ];
+  {
+    "cislo": 1,
+    "kategorie": "Vzdělávání a kompetence společnosti",
+    "opatreni": "MŠ: návyk, rozhodování, chování",
+    "popis": "Rozvíjet věku přiměřené aktivity pro připravenost na MU v MŠ zacílené na bezpečné chování, evakuační návyk, spolupráci a reakci na mimořádnou událost. Toto může být formou říkanek, písniček či her. Opatření směřuje na převedení připravenosti mezi běžné součásti života a je určeno prstřednictvím vychovatelů na MŠ dětem na MŠ.",
+    "zeme": "Japonsko – Bousai / disaster prevention (https://www.bousai.go.jp/en/)",
+    "narocnost": 2.0,
+    "prinosnost": 1.8,
+    "index": 0.9
+  },
+  {
+    "cislo": 2,
+    "kategorie": "Vzdělávání a kompetence společnosti",
+    "opatreni": "ZŠ: praktické dovednosti",
+    "popis": "Na ZŠ posílit praktickou první pomoc, první psychickou pomoc, reakci na mimořádné události, mediální gramotnost a zapojení do humanitárních aktivit. Důležité je aby žáci věděli, co dělat a byli schopni jednat v základních situacích. Tyto kompetence by měly být posilované na pravidelné bázi a zahrnovat také evaluaci úrovně dosažených kompetencí.",
+    "zeme": "Taiwan – Disaster-resilient schools (https://disaster.moe.edu.tw/MoeEnglishInfo/Home/AboutProgram)\nTaiwan – MOE disaster/defence education materials (https://english.moe.gov.tw/cp-117-22570-F28B7-1.html)",
+    "narocnost": 3.0,
+    "prinosnost": 2.6,
+    "index": 0.87
+  },
+  {
+    "cislo": 3,
+    "kategorie": "Vzdělávání a kompetence společnosti",
+    "opatreni": "SŠ: povinný předmět k resiliencI",
+    "popis": "Zavést povinný předmět zaměřený na: krizovou odolnost, občanský aktivismus, národní bezpečnost, mobilizaci, boj proti terorismu, leadership, pomoc při katastrofách a prevenci katastrof. Tento předmět by měl vychovávat potenciální komunitní leadery a zvyšovat obecné povědomí o dotčených tématech a jejich propojení s praxí.",
+    "zeme": "Lotyšsko – National Defence Training (https://www.mod.gov.lv/en/nozares-politika/comprehensive-state-defence/public-awareness/national-defence-training)\nhttps://zpe.gov.pl/szukaj?query=&stage=E2&subject=Edukacja+dla+bezpiecze%C5%84stwa+Szko%C5%82a+podstawowa+4-8",
+    "narocnost": 4.0,
+    "prinosnost": 2.9,
+    "index": 0.72
+  },
+  {
+    "cislo": 4,
+    "kategorie": "Vzdělávání a kompetence společnosti",
+    "opatreni": "VŠ: možnost DVC/vstupu do AZ za kredity",
+    "popis": "Plošně umožnit studentům VŠ získat kredity za absolvování DVC, či zapojení do AZ. Nyní je toto možné u vybraných VŠ, které toto domlouvají na individuální bázi, ale není to plošné opatření napříč všemi VŠ.",
+    "zeme": "—",
+    "narocnost": 2.0,
+    "prinosnost": 1.9,
+    "index": 0.95
+  },
+  {
+    "cislo": 5,
+    "kategorie": "Připravenost dospělé populace",
+    "opatreni": "Oficiální jednotný online modul",
+    "popis": "Vybudovat oficiální, jednotný online kurz pro veřejnost kombinovatelný s osobními setkáními a praktickými workshopy v regionech. Obsah by měl zahrnovat postupy při výpadku elektřiny a vody, základní zásoby, komunikaci se sousedy, první pomoc, první psychologickou pomoc atd. Může být sestaven z již existujících materiálů formou krátkých videí, obrázků, cvičení, simulací, atp. \nV severských státech bývá dnes standardem webová platforma doplněna mobilní aplikací s offline režimem.",
+    "zeme": "USA - https://training.fema.gov/is/crslist.aspx?lang=en\nLitva – Mobilization School (https://mobilizacijosmokykla.lt/?lang=en)\nhttps://training.fema.gov/is/courseoverview.aspx?code=IS-909&lang=en\nhttps://training.fema.gov/is/crslist.aspx?lang=en\nŠvédsko – Civil Defence and Resilience Agency (https://www.mcf.se/en/advice-for-individuals/home-preparedness--prepping-for-at-least-a-week/",
+    "narocnost": 2.5,
+    "prinosnost": 3.3,
+    "index": 1.32
+  },
+  {
+    "cislo": 6,
+    "kategorie": "Připravenost dospělé populace",
+    "opatreni": "Pravidelná a povinná příprava zaměstnanců",
+    "popis": "Začlenit krizovou a obrannou přípravu do průběžného povinného vzdělávání pracovníků veřejné správy podobně jako je dnes součástí školení BOZP, či první pomoci. Zaměstnanci KI by měli být pravidelně školeni i na specifika připravenosti a bezpečností spojené s jejich pozicí a danným objektem KI. Subjekty veřejné správy a volení zástupci by si měli osvojit základní principy krizového řízení. Vedoucí zaměstnanci subjektů hospodářské mobilizace to, jak funguje hospodářská mobilizace.",
+    "zeme": "",
+    "narocnost": 3.5,
+    "prinosnost": 3.5,
+    "index": 1.0
+  },
+  {
+    "cislo": 7,
+    "kategorie": "Připravenost dospělé populace",
+    "opatreni": "Cvičení výpadku služeb",
+    "popis": "Organizovat řízená cvičení, kdy si čtvrti nebo obce vyzkouší omezený režim bez vody či elektřiny. Opatření je určeno pro veškerou populaci, veřejnou správu a komunitní aktéry. Klíčový je prvek praktického fungování bez některých základních služeb.",
+    "zeme": "Singapur – Exercise SG Ready resources (https://www.totaldefence.gov.sg/resources/exercise-sg-ready-resources/)",
+    "narocnost": 3.0,
+    "prinosnost": 3.7,
+    "index": 1.23
+  },
+  {
+    "cislo": 8,
+    "kategorie": "Připravenost dospělé populace",
+    "opatreni": "Podpora získávání schopností oproti příslibu jejiich využití v krizi",
+    "popis": "Podporovat vzdělávání k získání základních schopností i jejich rozvoje pro potřeby v krizových situacích zaplacením % nákladů na vzdělání oproti závazku využití těchto schopností.\nTypicky by se jednlo o skupiny po vzoru Stanovené Zálohy Státu například: Aktivní zálohy, držitelé zbrojního průkazu, radioamatéry, operátory dronů, lidi se zdravotnickým výcvikem, krizové interventy atp.",
+    "zeme": "US - https://www.nationalguard.com/education\nUS - https://www.goarmy.com/careers-and-jobs/specialty-careers/medical/amedd-scholarship",
+    "narocnost": 3.0,
+    "prinosnost": 3.3,
+    "index": 1.1
+  },
+  {
+    "cislo": 9,
+    "kategorie": "Připravenost dospělé populace",
+    "opatreni": "Instrukce při zkoušce sirén",
+    "popis": "Při zkoušce sirén využít cvičný signál pro vzdělávání - ukázat rozdíl mezi testem a reálným varováním a vysílat základní instrukce co by lidé v reálné situaci měli dělat.",
+    "zeme": "Rakousko – AT-Alert (https://www.bmi.gv.at/204/at-alert/start.aspx)",
+    "narocnost": 1.0,
+    "prinosnost": 2.4,
+    "index": 2.4
+  },
+  {
+    "cislo": 10,
+    "kategorie": "Lokální komunity a leadership",
+    "opatreni": "Uvolnění pro komunitní práci",
+    "popis": "Zvážit dobrovolný model komunitní práce / sousedské služby, kde se lidé pravidelně setkávají a zvyšují místní soudržnost. V konkrétní jeden den za měsíc by stát proplatil zaměstnavatelům náklady spojené s uvolněním těchto lidí ve prospěch práce na připravenosti v rámci obce (podobně jako náklady u cvičení AZ). Konkrétní projekty mohou zahrnovat např. udržování krytů a jejich vybavení, vzdělávání, cvičení...",
+    "zeme": "Rwanda – Umuganda (https://www.minaloc.gov.rw/news-detail/umuganda-a-path-to-self-reliance-of-rwandans#:~:text=The%20Minister%20of%20Local%20Government%2C%20Patrice%20Mugenzi%2C,as%20a%20means%20of%20finding%20local%20solutions.)",
+    "narocnost": 3.0,
+    "prinosnost": 3.4,
+    "index": 1.13
+  },
+  {
+    "cislo": 11,
+    "kategorie": "Lokální komunity a leadership",
+    "opatreni": "Zapojení lokálních i celostátních specifických skupin",
+    "popis": "Systematizovat a sjednotit metodiku zapojení lokálních skupin s relevantními schopnostmi (mj. NNO, AZ, bývalé vojáky, ...) a dobrovolníků. Cílem je funkční velení v krizi na lokální úrovni v rámci kompetencí místního leadershipu, a snížení závislosti na centrálních složkách.",
+    "zeme": "",
+    "narocnost": 3.0,
+    "prinosnost": 3.5,
+    "index": 1.17
+  },
+  {
+    "cislo": 12,
+    "kategorie": "Lokální komunity a leadership",
+    "opatreni": "Zapojení starostů",
+    "popis": "Navázat na počáteční školení nově zvolených starostů s pravidelnými workshopy na úrovni ORP, i bilaterálními schůzkami ohledně posunu v připravenosti na úrovni obce. V těchto bude krizový manažer ORP metodicky pomáhat starostům ke zvýšení připravenosti na území jejich obce",
+    "zeme": "",
+    "narocnost": 2.0,
+    "prinosnost": 3.4,
+    "index": 1.7
+  },
+  {
+    "cislo": 13,
+    "kategorie": "Firmy a hospodářská mobilizace",
+    "opatreni": "Aktivní komunikace s firmami",
+    "popis": "Informovat firmy a veřejnost o hospodářské mobilizaci a pravděpodobných důsledcích mobilizace. Informovat firmy o možnosti a významu zapojení do katalogu vojenské mobility / dual-use kapacit Opatření je určeno pro firmy, zaměstnavatele a pracovníky hospodářské mobilizace a v českém kontextu je podstatné tím, že chápe firmy jako aktivní součást odolnosti a mobilizace, ne pouze jako dodavatele ad hoc.",
+    "zeme": "",
+    "narocnost": 2.0,
+    "prinosnost": 3.4,
+    "index": 1.7
+  },
+  {
+    "cislo": 14,
+    "kategorie": "Firmy a hospodářská mobilizace",
+    "opatreni": "Návody na připravenost pro firmy",
+    "popis": "Připravit praktické návody pro firmy k fungování v krizi a válce a subjekty hospodářské mobilizace stran možných důsledků pro ně. Následně s těmito firmami aktivně pracovat tak, aby byly reálně připraveny vč. vydefinování klíčových pozic, interních procesů atd.",
+    "zeme": "Švédsko – In case of crisis or war / business preparedness: Švédsko – Civil Defence and Resilience Agency (https://www.mcf.se/en/)\nSingapur – SGSecure@Workplaces (https://www.mom.gov.sg/employment-practices/sgsecure/overview/what-is-sgsecure-workplaces)",
+    "narocnost": 2.0,
+    "prinosnost": 3.9,
+    "index": 1.95
+  },
+  {
+    "cislo": 15,
+    "kategorie": "Firmy a hospodářská mobilizace",
+    "opatreni": "Self-facilitation guides pro výpadek elektřiny a kyberincident",
+    "popis": "Poskytnout organizacím samostatně použitelný návod pro facilitaci cvičení k výpadku proudu,  kybernetickému incidentu (případně další) s důrazem na konkrétní praktické návyky a chování zaměstnanců.",
+    "zeme": "Singapur – workplace table-top exercise guide (https://www.police.gov.sg/-/media/SPF/Community/SSWG-Resources/TTX-Guide-for-Workplaces.pdf)",
+    "narocnost": 1.5,
+    "prinosnost": 3.4,
+    "index": 2.27
+  },
+  {
+    "cislo": 16,
+    "kategorie": "Firmy a hospodářská mobilizace",
+    "opatreni": "Aktivní zapojování klíčových subjektů do pravidelných cvičení",
+    "popis": "Zapojovat klíčové firmy a jejich personál do pravidelných cvičení krizového řízení, KI, HOPKS, ale i IZS vč. AČR pro nácvik součinnosti a znalost procesu.",
+    "zeme": "",
+    "narocnost": 3.0,
+    "prinosnost": 4.2,
+    "index": 1.4
+  },
+  {
+    "cislo": 17,
+    "kategorie": "Firmy a hospodářská mobilizace",
+    "opatreni": "Oborové pooly",
+    "popis": "Vytvořit oborové pooly podporující preparedness firem přes výměnu informací, školení, cvičení, reporty a instrukce.",
+    "zeme": "Švédsko – Civil Defence and Resilience Agency (https://www.mcf.se/en/)\nFinsko – National Emergency Supply Agency (https://www.huoltovarmuuskeskus.fi/en/security-of-supply)",
+    "narocnost": 3.0,
+    "prinosnost": 3.8,
+    "index": 1.27
+  },
+  {
+    "cislo": 18,
+    "kategorie": "Kritická infrastruktura a ukrytí",
+    "opatreni": "Zaměstnanci KI jako součást obrany",
+    "popis": "Identifikovat klíčové pozice v KI a nutné počty lidí na danných pozicích pro udržení provozu. Určit potřebu fyzické přítomnosti vs.možnost práce na dálku a zajistit kontinuitu provozu při válce.",
+    "zeme": "Švédsko – Total defence (https://www.government.se/government-policy/total-defence/)",
+    "narocnost": 3.0,
+    "prinosnost": 3.9,
+    "index": 1.3
+  },
+  {
+    "cislo": 19,
+    "kategorie": "Kritická infrastruktura a ukrytí",
+    "opatreni": "Mapa krytů",
+    "popis": "Zveřejnit srozumitelnou mapu krytů vč. improvizovaných krytů pro větší množství osob. Mapa by měla zahrnovat i informace o vybavení krytu, jeho kapacitě, přístupu atd. Zároveň by měla umožnost na základě polohy vytipovat spádový kryt a fungovat i v případě výpadku sítí. Vedle evidence prostor je klíčové, aby obyvatelé věděli, kam jít, jak prostor použít a co si mají vzít s sebou.",
+    "zeme": "Polsko – shelter app / schrony (https://schrony.straz.gov.pl/)",
+    "narocnost": 2.5,
+    "prinosnost": 2.2,
+    "index": 0.88
+  },
+  {
+    "cislo": 20,
+    "kategorie": "Kritická infrastruktura a ukrytí",
+    "opatreni": "Strategie krytů a metodika improvizovaného ukrytí",
+    "popis": "Vytipovat potenciální improvizované úkryty pro různé typy krizí, udržovat stávající, zvyšovat celkovou kapacitu a informovat veřejnost o možnostech ukrytí. \nPokud se počítá s improvizovaným ukrytím, připravit kampaň s metodikou přípravy takových ukrytí vč. možnosti poradenství aby obce, či jednotlivci byli schopni toto převzít na sebe bez značné újmy na kvalitě.",
+    "zeme": "—",
+    "narocnost": 3.5,
+    "prinosnost": 2.3,
+    "index": 0.66
+  },
+  {
+    "cislo": 21,
+    "kategorie": "Kritická infrastruktura a ukrytí",
+    "opatreni": "Povinné kryty/ prostory dvojího užití",
+    "popis": "Nastavit povinnost kapacity ukrytí na osobu/budovu; alternativně umožnit poplatek za místo v obecním krytu.\nPovinnost by mohla být řešena prostory dvojího užití, které lze do 72 hodin zprovoznit jako kryty nebo krizové zázemí.",
+    "zeme": "Švýcarsko – Shelters / civil protection (https://www.babs.admin.ch/en/shelters)",
+    "narocnost": 5.0,
+    "prinosnost": 2.3,
+    "index": 0.46
+  },
+  {
+    "cislo": 22,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Dostatečné personální kapacity ozbrojených složek",
+    "popis": "Zajistit personální kapacity zejména v částech klíčových pro plnění NATO Capability Targets. Zlepšit firemní kulturu (zvýšit flexibilitu, opravdu pracovat podle mission command principu, předefinovat spotřební materiál), možnost nasazení v oblasti bydliště, možnost částečných úvazků, zavést výstupní pohovory, zjednodušit výpovědi pro neschopnost či podrývání morálky.",
+    "zeme": "—",
+    "narocnost": 5.0,
+    "prinosnost": 3.0,
+    "index": 0.6
+  },
+  {
+    "cislo": 23,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Reálná cvičení za blackoutu a výpadku KI",
+    "popis": "Zasadit standardní vojenská cvičení do scénářů protrahovaných polykrizí, mj. cvičit v kontextu blackoutu, výpadků kritické infrastruktury, sítí atp. pro ověření a nacvičení reálných schopností pro tyto případy.",
+    "zeme": "—",
+    "narocnost": 3.5,
+    "prinosnost": 3.9,
+    "index": 1.11
+  },
+  {
+    "cislo": 24,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Škálovatelné možnosti výcviku pro mobilizované obyvatelstvo",
+    "popis": "Připravit škálovatelné výcvikové alternativy pro rychlé zapojení mobilizovaného obyvatelstva. Kombinace vyššího množství vojáků v roli intruktorů pod vedením zkušených instruktorů, využití více vojenských prostor, kombinace s onlinovou výukou, atd. \nPokud bude závěrem, že není možné vycvičit statisíce lidí v krátkém čase, pak je nezbytné je cvičit průběžně.",
+    "zeme": "Litva – Mobilization School (https://mobilizacijosmokykla.lt/?lang=en)\nEstonsko – Kaitseliit / Defence League (https://www.kaitseliit.ee/en)",
+    "narocnost": 4.0,
+    "prinosnost": 2.2,
+    "index": 0.55
+  },
+  {
+    "cislo": 25,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Úprava legislativy stran aktivní zálohy",
+    "popis": "Změnit legislativu stran aktivních záloh tak, aby lépe odpovídala potřebám rychlého zapojení a umožnit vyslání do zahraničí i bez souhlasu příslušníků AZ.",
+    "zeme": "—",
+    "narocnost": 2.5,
+    "prinosnost": 1.8,
+    "index": 0.72
+  },
+  {
+    "cislo": 26,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Dobrovolné předurčení přiblížit ke Kaitseliit",
+    "popis": "Rozvíjet dobrovolné předurčení pro specifické krizové role vč. expertních rolí. Vytvořit civilní sbor odborníků pro technické, logistické a jiné ne-hasičské krize. Opatření umožňuje škálovat obranné kapacity i mimo profesionální jádro státu.\nK tomuto opatření by se měla vázat informační kampaň zaměřená na benefity pro účastníky v případě případné mobilizace.",
+    "zeme": "Estonsko – Kaitseliit / Defence League (https://www.kaitseliit.ee/en)\nNěmecko – THW (https://www.thw.de/EN/Home/home_node.html)",
+    "narocnost": 4.0,
+    "prinosnost": 3.3,
+    "index": 0.82
+  },
+  {
+    "cislo": 27,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Mobilizační registr / transparentní popis postupu",
+    "popis": "Zavést jednotný registr lidí v klíčových pozicích/ s klíčovými schopnostmi pro předcházení multiplikované potřebě téhož člověka,  či jeho neoptimální alokaci v případě krize.",
+    "zeme": "Estonsko – Defence Resources Agency (https://kra.ee/en/)",
+    "narocnost": 3.5,
+    "prinosnost": 2.7,
+    "index": 0.77
+  },
+  {
+    "cislo": 28,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Povinná vojenská služba",
+    "popis": "Zavést povinný vojenský výcvik jako jednu z možností posílení obranyschopnosti.",
+    "zeme": "—",
+    "narocnost": 5.0,
+    "prinosnost": 2.3,
+    "index": 0.46
+  },
+  {
+    "cislo": 29,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Pravidelné dobrovolnictví pro ozbrojené složky",
+    "popis": "Umožnit systémové dobrovolnictví pro ozbrojené složky oproti poptávce ve specializovaných úloách jako programování, forecasting, poradenství, atd.",
+    "zeme": "Glimt.nu (https://glimt.nu/)",
+    "narocnost": 2.5,
+    "prinosnost": 2.9,
+    "index": 1.16
+  },
+  {
+    "cislo": 30,
+    "kategorie": "Ozbrojené složky a mobilizační kapacity",
+    "opatreni": "Výstroj a výzbroj pro potenciální posily",
+    "popis": "Zajistit výzbroj a výstroj i pro potenciální posily, nikoli jen pro stávající personál.",
+    "zeme": "—",
+    "narocnost": 4.5,
+    "prinosnost": 1.7,
+    "index": 0.38
+  },
+  {
+    "cislo": 31,
+    "kategorie": "Informační odolnost a krizová komunikace",
+    "opatreni": "Úřad pro psychologickou obranu",
+    "popis": "Zvážit instituci zaměřenou na ochranu před vnějším informačním ovlivňováním pro analýzu aktérů, jejich technik a narativů spojenou s pre-bunkingem. Agentura by zároveň analyzovala vnitřní zranitelnosti a možností práce s nimi a dopady informačních/psychologických útoků.",
+    "zeme": "Švédsko – Psychological Defence Agency (https://mpf.se/en/)\nŠvédsko – Defence Agency - https://www.foi.se/en/foi.html",
+    "narocnost": 3.5,
+    "prinosnost": 3.9,
+    "index": 1.11
+  },
+  {
+    "cislo": 32,
+    "kategorie": "Informační odolnost a krizová komunikace",
+    "opatreni": "Humor over Rumor",
+    "popis": "„Humor over Rumor“ - úřady pomocí memů vtipně reagují na dezinfo a vysvětlují pravdu. Mem se šíří rychleji než lež.",
+    "zeme": "Taiwan – Humor over Rumor / counter-disinformation overview (https://www.taiwan.gov.tw/content_6.php)",
+    "narocnost": 1.0,
+    "prinosnost": 3.2,
+    "index": 3.2
+  },
+  {
+    "cislo": 33,
+    "kategorie": "Informační odolnost a krizová komunikace",
+    "opatreni": "Kvalitní StratCom a snížení informační asymetrie",
+    "popis": "Budovat upřímnou preventivní komunikaci bez přehnané obavy ze strašení veřejnosti. Identifikace a transparentní komunikace toho, co stát potřebuje od běžných občanů pro fungování v krizi, jak by to prakticky mohlo vypadat a jak se připravit. Zároveň jasně komunikovat, že stát je koordinátor a občané/komunity musí být připraveni zvládnout první fázi krize sami.",
+    "zeme": "—",
+    "narocnost": 2.5,
+    "prinosnost": 4.3,
+    "index": 1.72
+  },
+  {
+    "cislo": 34,
+    "kategorie": "Informační odolnost a krizová komunikace",
+    "opatreni": "Kvalitní systém varování s obtížnou fakovatelností",
+    "popis": "Zajistit varování, které je technicky důvěryhodné, jednoznačné a těžko napodobitelné. Varování má být doplněno srozumitelnými instrukcemi, aby lidé neobdrželi jen signál hrozby, ale věděli, co mají okamžitě udělat. Inovativní prvek pro ČR spočívá v tom, že spojuje strategickou komunikaci, důvěru, varování a odolnost vůči manipulaci do jedné připravenostní vrstvy.",
+    "zeme": "Japonsko – J-Alert overview (https://www.fdma.go.jp/)\nNěmecko – NINA warning app / BBK (https://www.bbk.bund.de/EN/Prepare-for-disasters/Personal-Preparedness/Keep-up-to-date/keep-up-to-date_node.html)\nIzrael – Home Front Command (https://www.oref.org.il/eng)",
+    "narocnost": 3.5,
+    "prinosnost": 4.2,
+    "index": 1.2
+  },
+  {
+    "cislo": 35,
+    "kategorie": "Informační odolnost a krizová komunikace",
+    "opatreni": "Multi-platformní varování",
+    "popis": "Doplnit varování centrální SMS, aplikací a nouzovým rozhlasovým, televizním vysíláním i se zobrazit na libovolné obrazovce počítače v oblasti. Systém varování má být velmi dobře zabezpečený a mít schopnost proniknout i skrz režim nerušit a být specifické podle lokality příjímacího zařízení. Varování má být doplněno srozumitelnými instrukcemi, aby lidé neobdrželi jen signál hrozby, ale věděli, co mají okamžitě udělat.",
+    "zeme": "Japonsko – J-Alert overview (https://www.fdma.go.jp/)\nNěmecko – NINA warning app / BBK (https://www.bbk.bund.de/EN/Prepare-for-disasters/Personal-Preparedness/Keep-up-to-date/keep-up-to-date_node.html)\nIzrael – Home Front Command (https://www.oref.org.il/eng)",
+    "narocnost": 3.0,
+    "prinosnost": 4.1,
+    "index": 1.37
+  },
+  {
+    "cislo": 36,
+    "kategorie": "Informační odolnost a krizová komunikace",
+    "opatreni": "Dedikovaná TETRA/mission-critical síť pro obecní představitele",
+    "popis": "Napojit obecní představitele a klíčové role v krizi na robustní komunikační kanál v rámci jednotné dedikované TETRA/mission-critical sítě pro komunikaci s obecními představiteli.",
+    "zeme": "Finsko – Virve / Virve 2 (https://www.erillisverkot.fi/en/virve-radio-network/)\nNorsko – Nødnett (https://www.dsb.no/en/nodnett/About-N_84dnett/)\nŠvédsko – SWEN (https://www.mcf.se/en/services--tools/swen--the-swedish-emergency-network/)",
+    "narocnost": 4.0,
+    "prinosnost": 4.4,
+    "index": 1.1
+  },
+  {
+    "cislo": 37,
+    "kategorie": "Zásoby, logistika a soběstačnost",
+    "opatreni": "Virtuální zásoby a zásoby řízené dodavatelem",
+    "popis": "U vybraných firem a sektorů zavést povinnost držet zásoby nad rámec běžného provozu. Stát nevyužívá jen státní centralizované státy , ale využívá virtuální zásoby a zásoby řízené dodavatelem. Zároveň je vhodné předem rámcově zasmluvnoit firmy pro krizové dodávky zboží i služeb. Opatření posouvá zásoby blíže místu spotřeby a doplňuje centrální skladování o logistiku poslední míle.",
+    "zeme": "Finsko – National Emergency Supply Agency (https://www.huoltovarmuuskeskus.fi/en/security-of-supply)\nŠvýcarsko – compulsory stocks (https://www.bwl.admin.ch/en/range-of-compulsory-stocks)\nŠvédsko – Civil Defence and Resilience Agency (https://www.mcf.se/en/)",
+    "narocnost": 3.5,
+    "prinosnost": 4.1,
+    "index": 1.17
+  },
+  {
+    "cislo": 38,
+    "kategorie": "Zásoby, logistika a soběstačnost",
+    "opatreni": "Decentralizované komunitní sklady na úrovni obcí/čtvrtí",
+    "popis": "Podporovat lokální sklady pro základní humanitární a technický materiál na komunitní úrovni. Smyslem je kombinovat centrální zásoby s decentralizovanými zásobami v jednotlivých obcích v místech, kde by pravděpodobně vznikl místní humanitární bod - ve školách, a v malém množství přímo v jednotlivých krytech nebo prostorách ukrytí.",
+    "zeme": "Japonsko – Hazard Map Portal (https://disaportal.gsi.go.jp/)\nJaponsko – Kita City disaster preparedness map/stockpiles (https://bosaiportal.city.kita.lg.jp/assets/r5bosaichizuenglisha.pdf)",
+    "narocnost": 3.0,
+    "prinosnost": 3.9,
+    "index": 1.3
+  },
+  {
+    "cislo": 39,
+    "kategorie": "Zásoby, logistika a soběstačnost",
+    "opatreni": "Interaktivní kalkulačka připravenosti",
+    "popis": "Stanovit cílovou míru soběstačnosti pro domácnosti, obce, kraje a vybrané služby a usnadnit specifikování přípravných úkonů pro konkrétní situaci. \nVytvořit kalkulačku která pomůže spočítat zásoby a vybavení podle domácnosti. Analogicky připravit kalkulačku pro obce v závislosti na jejich parametrech.",
+    "zeme": "Německo - https://www.ernaehrungsvorsorge.de/private-vorsorge/notvorrat/vorratskalkulator\nRakousko – https://zivilschutz.at/thema/vorrat/",
+    "narocnost": 1.5,
+    "prinosnost": 3.3,
+    "index": 2.2
+  },
+  {
+    "cislo": 40,
+    "kategorie": "Zásoby, logistika a soběstačnost",
+    "opatreni": "Daňové prázdniny na připravenost",
+    "popis": "Zavést týden/periodu bez DPH či daňové zvýhodnění pro nákup vybraného připravenostního vybavení. Opatření je určeno pro domácnosti, obce, kraje, firmy a správce zásob pro časově limitovaný popud ke zvýšení připravennosti.",
+    "zeme": "USA/Texas – Emergency Preparation Supplies Sales Tax Holiday (https://comptroller.texas.gov/taxes/publications/98-1017.php)",
+    "narocnost": 2.0,
+    "prinosnost": 2.9,
+    "index": 1.45
+  },
+  {
+    "cislo": 41,
+    "kategorie": "Lokální huby, evakuace a místní odpovědnost",
+    "opatreni": "Lokální humanitární huby",
+    "popis": "Na úrovni obcí či čtvrtí předem určit potenciální lokální humanitární body, tj. místa pro distribuci vody, humanitární pomoci, informací a základní podpory obyvatel s možností eskalovat potřeby směrem k obci nebo ORP. Tato místa by také ideálně měla disponovat Zajistit radiovým spojením, záložním zdrojem energie pro nabití mobilů a starlinkem. Zajistit znalost tohoto bodu místním obyvatelstvem.",
+    "zeme": "Ukrajina – Points of Invincibility (https://www.kmu.gov.ua/en/news/mvs-rozpochali-robotu-punkti-nezlamnosti)\nRakousko – Blackout-Arbeitsmappe für Gemeinden (https://www.gemeindebund.at/blackout-leitfaden-fuer-gemeinden-was-tun-vor-dem-notfall-2/)\nNový Zéland – Community Emergency Hubs (https://www.wremo.nz/get-ready/community-ready/community-emergency-hubs)",
+    "narocnost": 3.0,
+    "prinosnost": 4.0,
+    "index": 1.33
+  },
+  {
+    "cislo": 42,
+    "kategorie": "Lokální huby, evakuace a místní odpovědnost",
+    "opatreni": "Školy jako evakuační centra",
+    "popis": "Procvičovat systém využití škol jako evakuačních center a umožnit žákům být součástí pomoci v jejich škole s tím, že již k tomu budou připravováni předem.",
+    "zeme": "Japonsko – schools as evacuation sites (https://www.nier.go.jp/shisetsu/pdf/e-bousaitsuiki.pdf)\nČR – ČČK Praha 1 Be Ready (https://cckpraha1.cz/)",
+    "narocnost": 3.0,
+    "prinosnost": 3.3,
+    "index": 1.1
+  },
+  {
+    "cislo": 43,
+    "kategorie": "Lokální huby, evakuace a místní odpovědnost",
+    "opatreni": "Náhradní stanoviště a linie nástupnictví úřadů",
+    "popis": "Úřady mají vytipované náhradní stanoviště a jasně právně ukotvenou linii nástupnictví pro zajištění kontinuity operací ve veřejné sféře.",
+    "zeme": "USA – Continuity of Operations / FEMA (https://www.fema.gov/emergency-managers/national-preparedness/continuity)",
+    "narocnost": 3.0,
+    "prinosnost": 4.1,
+    "index": 1.37
+  },
+  {
+    "cislo": 44,
+    "kategorie": "Lokální huby, evakuace a místní odpovědnost",
+    "opatreni": "Krizový tým v každé obci/čtvrti",
+    "popis": "Každá obec/čtvrť má mít krizový tým zodpovědný za znalostí lidí, sil, prostředků a potřeb v území vč. potenciálních zranitelností. Tento tým by také spolupracoval s HZS a starosty stran potenciálních humanitárních bodů, evakuačních center, přípravy obyvatel a krytů.",
+    "zeme": "Filipíny – Barangay DRRM Committees overview (https://ndrrmc.gov.ph/)\nŠvédsko – civil duty / civilplikt (https://www.mcf.se/en/advice-for-individuals/swedish-defence/duty-to-contribute-to-total-defence/)\nŠvýcarsko – Civil protection (https://www.babs.admin.ch/en/civil-protection)",
+    "narocnost": 3.0,
+    "prinosnost": 4.3,
+    "index": 1.43
+  },
+  {
+    "cislo": 45,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Fyzická ochrana poskytovatelů kritických služeb",
+    "popis": "Ověřit a skutečně vymáhat zajištění fyzické ochrany poskytovatelů kritických služeb ideálně na odpovědnost poskytovatelů těchto služeb.",
+    "zeme": "ČR – zákon č. 266/2025 Sb. (https://www.zakonyprolidi.cz/cs/2025-266)",
+    "narocnost": 3.5,
+    "prinosnost": 3.6,
+    "index": 1.03
+  },
+  {
+    "cislo": 46,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Elektrická energie",
+    "popis": "Určit prioritní objekty na státní i lokální úrovni a minimální dobu jejich nouzového provozu, aby záložní energie nebyla jen izolovaný technický nákup. \nRozvíjet decentralizovanou síť generátorů a solárních zdrojů pro krizový provoz. Podporovat vznik microgridů (vč. odpovídajícího legislativního rámce) a redundanci pro klíčové služby",
+    "zeme": "Critical infrastructure microgrid – dokument uvádí obecně; konkrétní vzor doplnit v další fázi.\nRakousko – Blackout-Arbeitsmappe für Gemeinden (https://www.gemeindebund.at/blackout-leitfaden-fuer-gemeinden-was-tun-vor-dem-notfall-2/)\nUkrajina – decentralised energy resilience / IEA (https://www.iea.org/reports/empowering-ukraine-through-a-decentralised-electricity-system)",
+    "narocnost": 4.5,
+    "prinosnost": 4.2,
+    "index": 0.93
+  },
+  {
+    "cislo": 47,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Blackout-checklist pro obce",
+    "popis": "Zpracovat a používat blackout checklist pro obce. Checklist má převádět obecné požadavky připravenosti do jednoduchých kontrolovatelných kroků, které může obec postupně splnit.",
+    "zeme": "Rakousko – Blackout-Arbeitsmappe für Gemeinden (https://www.gemeindebund.at/blackout-leitfaden-fuer-gemeinden-was-tun-vor-dem-notfall-2/)",
+    "narocnost": 1.5,
+    "prinosnost": 3.3,
+    "index": 2.2
+  },
+  {
+    "cislo": 48,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Lokální teplárny a místní vytápění",
+    "popis": "Budovat alternativy vytápění nezávislé na centrální síti. Obnovovat lokální teplárny a místní vytápění pomocí modulárních topných jednotek, CHP, FV+baterií, tepelných čerpadel a zásobníků tepla.",
+    "zeme": "Ukrajina – decentralised energy resilience / IEA (https://www.iea.org/reports/empowering-ukraine-through-a-decentralised-electricity-system)",
+    "narocnost": 4.0,
+    "prinosnost": 3.1,
+    "index": 0.78
+  },
+  {
+    "cislo": 49,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Modulární/decentralizované zásobování vodou a odpadní vody",
+    "popis": "Podporovat modulární a decentralizované systémy pitné vody a odpadních vod včetně peer-to-peer sítí vodáren. Smyslem je kombinovat centrální zásoby s decentralizovanými zásobami u obcí, škol, firem nebo dodavatelů a tím zkrátit cestu k lidem.",
+    "zeme": "USA/Texas – TxWARN (https://www.txwarn.org/)\nUSA – WARN / EPA (https://www.epa.gov/waterutilityresponse/waterwastewater-agency-response-network-warn)",
+    "narocnost": 4.5,
+    "prinosnost": 4.1,
+    "index": 0.91
+  },
+  {
+    "cislo": 50,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Alternativní systémy plateb",
+    "popis": "Zavést nebo posílit povinnou akceptaci plateb v hotovosti u klíčových služeb. Zvážit záložní alternativní platební systémy, např. mobilní platby přes SMS.",
+    "zeme": "Keňa – M-Pesa (https://www.safaricom.co.ke/personal/m-pesa)",
+    "narocnost": 3.0,
+    "prinosnost": 3.4,
+    "index": 1.13
+  },
+  {
+    "cislo": 51,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Power-Banking",
+    "popis": "Pobočky velkých bank jsou vybaveny generátory, záložními internetovými kanály (často Starlink) a hotovostí. V těchto pobočkách se dá vybrat hotovost, provést převod nebo zaplatit účty i v případě výpadků. Banky sdílejí svou infrastrukturu.",
+    "zeme": "UA",
+    "narocnost": 3.0,
+    "prinosnost": 3.6,
+    "index": 1.2
+  },
+  {
+    "cislo": 52,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Nemocnice a polikliniky jako kritické ostrovní body",
+    "popis": "Vybrané nemocnice a polikliniky vybavit tak, aby fungovaly jako kritické ostrovní body a případně vytipovat alternativní zdravotnická centra pro případ poškození nemocnic",
+    "zeme": "Ukrajina – decentralised energy resilience / IEA (https://www.iea.org/reports/empowering-ukraine-through-a-decentralised-electricity-system)\nNepál – Alternate Care Sites / WHO (https://www.who.int/nepal)",
+    "narocnost": 4.5,
+    "prinosnost": 4.6,
+    "index": 1.02
+  },
+  {
+    "cislo": 53,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Dopravní infrastruktura dual-use",
+    "popis": "Rozvíjet dopravní infrastrukturu dvojího užití pro civilní krize i obranu.",
+    "zeme": "EU – Military Mobility (https://defence-industry-space.ec.europa.eu/eu-defence-industry/military-mobility_en)",
+    "narocnost": 4.5,
+    "prinosnost": 3.1,
+    "index": 0.69
+  },
+  {
+    "cislo": 54,
+    "kategorie": "Kritické služby a 7BLR",
+    "opatreni": "Seznámení měkkých sektorů s rolí a plánem",
+    "popis": "Seznámit školství, sociální sektor, dopravce a další měkké sektory s jejich rolí v krizi. Metodicky zaštítit jejich posun k připravenosti vč. přípravy pravidelně revidovaného akčního plánu pro jednotlivé aktéry.",
+    "zeme": "—",
+    "narocnost": 2.0,
+    "prinosnost": 3.6,
+    "index": 1.8
+  },
+  {
+    "cislo": 55,
+    "kategorie": "Digitalizace a datová kontinuita",
+    "opatreni": "Stát na cloudu a datová ambasáda",
+    "popis": "Zajistit kontinuitu a možnost obnovy zásadních státních dat pomocí government cloudu a/nebo datové ambasády.",
+    "zeme": "Estonsko – Government Cloud (https://e-estonia.com/solutions/e-governance/government-cloud/)\nEstonsko – Data Embassy (https://www.valitsus.ee/en/news/estonia-establish-worlds-first-data-embassy-luxembourg)",
+    "narocnost": 4.5,
+    "prinosnost": 3.6,
+    "index": 0.8
+  },
+  {
+    "cislo": 56,
+    "kategorie": "Digitalizace a datová kontinuita",
+    "opatreni": "Offline dostupnost zásadních krizových dat",
+    "popis": "Data zásadní pro krizové fungování musí být dostupná offline, stejně jako zásadní kontakty, a offline varianty procesů a nástrojů.",
+    "zeme": "—",
+    "narocnost": 2.5,
+    "prinosnost": 4.2,
+    "index": 1.68
+  },
+  {
+    "cislo": 57,
+    "kategorie": "Spolupráce a systémová integrace",
+    "opatreni": "Sdílení informací mezi systémy státní správy",
+    "popis": "Zlepšit výměnu informací napříč systémy státní správy.",
+    "zeme": "Estonsko – X-tee data exchange (https://www.ria.ee/en/state-information-system/data-exchange-platforms/data-exchange-layer-x-tee)",
+    "narocnost": 4.0,
+    "prinosnost": 4.2,
+    "index": 1.05
+  },
+  {
+    "cislo": 58,
+    "kategorie": "Digitalizace a datová kontinuita",
+    "opatreni": "Národní komunikační síť pro případ výpadku",
+    "popis": "Vybudovat národní komunikační síť pro případ výpadku běžné infrastruktury.",
+    "zeme": "Finsko – Virve / Virve 2 (https://www.erillisverkot.fi/en/virve-radio-network/)\nNorsko – Nødnett (https://www.dsb.no/en/nodnett/About-N_84dnett/)\nŠvédsko – SWEN (https://www.mcf.se/en/services--tools/swen--the-swedish-emergency-network/)",
+    "narocnost": 4.5,
+    "prinosnost": 4.6,
+    "index": 1.02
+  },
+  {
+    "cislo": 59,
+    "kategorie": "Digitalizace a datová kontinuita",
+    "opatreni": "Common operating picture",
+    "popis": "Usnadnit udržování společného, průběžně aktualizovaného obrazu situace pro rozhodování na jediné sdíené platformě. K tomuto je možné využít GIS mapu a tak navázat na HZS. Na platformě je vhodné sjednotit pojmy, datové standardy a přístupy různých složek a aktérů.",
+    "zeme": "Nizozemsko – LCMS / net-centric working (https://nipv.nl/)\nEstonsko – X-tee data exchange (https://www.ria.ee/en/state-information-system/data-exchange-platforms/data-exchange-layer-x-tee)\nUSA – FEMA GIS (https://gis.fema.gov/)\nIzrael – Home Front Command (https://www.oref.org.il/eng)",
+    "narocnost": 3.5,
+    "prinosnost": 4.6,
+    "index": 1.31
+  },
+  {
+    "cislo": 60,
+    "kategorie": "Digitalizace a datová kontinuita",
+    "opatreni": "Souhrnná aplikace pro občanské rozhraní",
+    "popis": "Vytvořit jednotné občanské rozhraní pro vše potřebné pro bezpečí: kryty, humanitární body, sklady, hlášní potřeb, lokální varování podle polohy, vzdělávací obsah k připravenosti. Dálší vhodné možnosti zahrnují: umožnit potvrdit klikem, že je člověk v pořádku a nastavit komu se informace odešle (rodina, firma, obec atp.), zajistit jednoduchý způsob žádosti o pomoc přes sousedskou aktivaci nebo IZS funkce umožnit crowdsourcing: občan informace nejen čerpá, ale i přispívá: prostředky, podezřelé předměty, pohyb nepřítele atp. \nJe vysoce vhodné, aby aplikace fungovala i v offline modu.",
+    "zeme": "Ukrajina – Diia (https://diia.gov.ua/)\nFinsko – 112 Suomi app (https://112.fi/en/112-suomi-application)\nJaponsko – J-Alert overview (https://www.fdma.go.jp/)\nUK – GoodSAM volunteering (https://www.goodsamapp.org/ukAndEu)\nSingapur – SGSecure (https://www.sgsecure.gov.sg/)\nLitva – LT72 (https://lt72.lt/)\nJaponsko – Hazard Map Portal (https://disaportal.gsi.go.jp/)",
+    "narocnost": 3.5,
+    "prinosnost": 4.3,
+    "index": 1.23
+  },
+  {
+    "cislo": 61,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Rychlejší aktivace vybraných opatření",
+    "popis": "Umožnit automatickou aktivaci technických opatření a umožnit krátkodobou aktivaci předem vymezených opatření bez okamžitého souhlasu Sněmovny, s následnou možností zrušení v hlasování, které musí proběhnout v rámci stanovené doby.",
+    "zeme": "UK – Civil Contingencies Act 2004 (https://www.legislation.gov.uk/ukpga/2004/36/contents)\nUK – CCA post-implementation review (https://assets.publishing.service.gov.uk/media/6283a1a6d3bf7f1f3ef4838d/cca-pir-2022.pdf)",
+    "narocnost": 2.5,
+    "prinosnost": 4.4,
+    "index": 1.76
+  },
+  {
+    "cislo": 62,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Aktivace jednotlivých opatření",
+    "popis": "Umožit dřívější aktivaci vybraných opatření jednotlivě bez nutnosti přechodu do jiného krizového stavu. Toto zvýší akceschopnost a rozváže ruce bez toho, aby automaticky byl schválen celý balíček opatření, které nemusí být potřeba a mohly by být zneužitelné.",
+    "zeme": "Finsko - https://turvallisuuskomitea.fi/en/comprehensive-security/\nFinsko – Emergency Powers Act (https://www.finlex.fi/api/media/statute-foreign-language-translation/688046/mainPdf/main.pdf)",
+    "narocnost": 2.5,
+    "prinosnost": 4.2,
+    "index": 1.68
+  },
+  {
+    "cislo": 63,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Propojení krizových plánů s havarijními plány",
+    "popis": "Krizové plány jsou doplněny o část zaměřenou na akce jednotlivých aktérů tzv. akční karty. Akční karty jsou předem schválené, popisují specifické úkony vázané k situacím a opravňují k nim. Opatření je určeno pro vládu, parlament, resorty, kraje, ORP, obce a klíčové soukromé frmy, NNO, a další klíčové aktéry.  V českém kontextu posouvá legislativu ke konkrétním schopnostem, odpovědnostem a aktivaci opatření.",
+    "zeme": "Norsko - https://www.dsb.no/ros-og-beredskap/",
+    "narocnost": 3.0,
+    "prinosnost": 4.3,
+    "index": 1.43
+  },
+  {
+    "cislo": 64,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Měřitelné standardy připravenosti ORP/krajů a civilně-vojenské přílohy",
+    "popis": "Doplnit plány o standardy a interní přílohy: trasy, paliva, logistická místa, mosty, sklady, zdravotnictví, ubytování, opravy a dekonflikce evakuace atp.",
+    "zeme": "EU – Military Mobility (https://defence-industry-space.ec.europa.eu/eu-defence-industry/military-mobility_en)",
+    "narocnost": 3.5,
+    "prinosnost": 4.1,
+    "index": 1.17
+  },
+  {
+    "cislo": 65,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Revize plánů s ohledem na dlouhodobou krizi",
+    "popis": "Revidovat krizové a související plány pro dlouhodobé krize, nejen krátké mimořádné události.",
+    "zeme": "—",
+    "narocnost": 2.5,
+    "prinosnost": 4.4,
+    "index": 1.76
+  },
+  {
+    "cislo": 66,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Revize dohod o spolupráci na lokální úrovni",
+    "popis": "Revidovat dohody o spolupráci mezi obcemi pro krizový provoz včetně kompatibility vybavení a sdílení prostředků.",
+    "zeme": "USA – Emergency Management Assistance Compact (https://www.emacweb.org/)",
+    "narocnost": 2.0,
+    "prinosnost": 4.1,
+    "index": 2.05
+  },
+  {
+    "cislo": 67,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Total defence v územním a funkčním plánování",
+    "popis": "Promítat požadavky total defence do běžného územního a funkčního plánování (od požadavků na úkryty, přes veřejná pítka, solární nabíječky atd.)",
+    "zeme": "Švédsko – Total defence (https://www.government.se/government-policy/total-defence/)\nJaponsko – MLIT Disaster Prevention Portal (https://www.mlit.go.jp/river/bousai/bousai-portal/en/index.html)\nJaponsko – Tokyo disaster prevention parks (https://www.tokyo-park.or.jp/special/bousai/english/)",
+    "narocnost": 4.0,
+    "prinosnost": 3.6,
+    "index": 0.9
+  },
+  {
+    "cislo": 68,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Fond resilience",
+    "popis": "Zřídit mechanismus financování připravenostních opatření na lokální úrovni, zejména pro znevýhodněné a geograficky zranitelné regiony.",
+    "zeme": "—",
+    "narocnost": 3.5,
+    "prinosnost": 4.0,
+    "index": 1.14
+  },
+  {
+    "cislo": 69,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Resilienční skóre a doporučení po cvičení",
+    "popis": "Po cvičení na úrovni obcí veřejně publikovat resilience score zveřejnitelná doporučení včetně termínů k adresování mezer pro zvýšení zodpovědnosti vůči občanům. Toto by mělo probíhat na základě metodiky hodnocení umožňující srovnání a s ohledem na potenciální bezpečnostní citlivost.",
+    "zeme": "—",
+    "narocnost": 2.0,
+    "prinosnost": 3.6,
+    "index": 1.8
+  },
+  {
+    "cislo": 70,
+    "kategorie": "Legislativa, governance a plánování",
+    "opatreni": "Audit národní bezpečnosti na pravidelné bázi",
+    "popis": "Provádět Audit národní bezpečnosti pravidelně nikoli jednorázově a aktualizovat jej jednou za tři roky.",
+    "zeme": "ČR – Audit národní bezpečnosti / MV (https://mv.gov.cz/chh/clanek/audit-narodni-bezpecnosti.aspx)",
+    "narocnost": 3.0,
+    "prinosnost": 3.9,
+    "index": 1.3
+  },
+  {
+    "cislo": 71,
+    "kategorie": "Spolupráce a systémová integrace",
+    "opatreni": "Integrovat EU preparedness iniciativy s českým systémem",
+    "popis": "Nadále posilovat spolupráci v EU a propojit český systém s EU Preparedness Union, rescEU, ProtectEU, EUCCS, Stockpiling Strategy, CER, Military Mobility, Preparedness Taskforce.",
+    "zeme": "EU – Preparedness Union Strategy (https://commission.europa.eu/topics/preparedness_en)\nEU – rescEU (https://civil-protection-humanitarian-aid.ec.europa.eu/what/civil-protection/resceu_en)\nEU – ProtectEU Strategy (https://home-affairs.ec.europa.eu/policies/internal-security/protecteu_en)\nEU – European Critical Communication System (https://home-affairs.ec.europa.eu/news/enhancing-europes-capacity-react-preparing-european-critical-communication-system-2026-01-30_en)\nEU – Stockpiling Strategy (https://civil-protection-humanitarian-aid.ec.europa.eu/document/download/c57d4067-1900-4616-9239-ca4598b55d69_en)\nEU – Critical Entities Resilience (https://home-affairs.ec.europa.eu/policies/internal-security/counter-terrorism-and-radicalisation/protection/critical-infrastructure-resilience-eu-level_en)\nEU – Military Mobility (https://defence-industry-space.ec.europa.eu/eu-defence-industry/military-mobility_en)",
+    "narocnost": 3.0,
+    "prinosnost": 4.3,
+    "index": 1.43
+  },
+  {
+    "cislo": 72,
+    "kategorie": "Spolupráce a systémová integrace",
+    "opatreni": "Snížení fragmentace a Resilience fora",
+    "popis": "Podpořit komunikaci napříč resorty a úrovněmi formou resilience fór s konkrétními výstupy a tím snižovat fragmentaci napříč resorty, úrovněmi, regiony a nástroji. Zaměřit se na zlepšení funkčnost systému jako celku.",
+    "zeme": "UK – Local Resilience Forums (https://www.gov.uk/guidance/local-resilience-forums-contact-details)",
+    "narocnost": 2.5,
+    "prinosnost": 4.2,
+    "index": 1.68
+  },
+  {
+    "cislo": 73,
+    "kategorie": "Spolupráce a systémová integrace",
+    "opatreni": "Jednotný přístup k zapojení dobrovolníků",
+    "popis": "Sjednotit systém zapojení dobrovolníků z různých organizací i ad hoc tak, aby dobrovolnické kapacity byly využity k maximálnímu přínosu.",
+    "zeme": "Německo – THW (https://www.thw.de/EN/Home/home_node.html)\nŠvýcarsko – Civil protection (https://www.babs.admin.ch/en/civil-protection)",
+    "narocnost": 3.0,
+    "prinosnost": 4.1,
+    "index": 1.37
+  },
+  {
+    "cislo": 74,
+    "kategorie": "Spolupráce a systémová integrace",
+    "opatreni": "Sjednotit krajské a lokální krizové portály",
+    "popis": "Sjednotit uživatelské standardy a obsah krajských a lokálních krizových portálů pod centrální záštitou.",
+    "zeme": "—",
+    "narocnost": 2.0,
+    "prinosnost": 4.0,
+    "index": 2.0
+  },
+  {
+    "cislo": 75,
+    "kategorie": "HNS a vojenská mobilita",
+    "opatreni": "Technický stav dopravní infrastruktury pro HNS",
+    "popis": "Zhodnotit a zlepšit technický stav dopravní infrastruktury relevantní pro HNS a zároveň zajistit fyzickou ochranu atávající strategické infrastruktury vč. dual-use.",
+    "zeme": "EU – Military Mobility (https://defence-industry-space.ec.europa.eu/eu-defence-industry/military-mobility_en)",
+    "narocnost": 5.0,
+    "prinosnost": 2.5,
+    "index": 0.5
+  },
+  {
+    "cislo": 76,
+    "kategorie": "HNS a vojenská mobilita",
+    "opatreni": "Palivo, elektřina a služby pro spojenecké síly",
+    "popis": "Zmapovat a dořešit přístup k palivu, elektřině a dalším službám pro spojenecké síly včetně oprav vojenské techniky.",
+    "zeme": "EU – Military Mobility (https://defence-industry-space.ec.europa.eu/eu-defence-industry/military-mobility_en)",
+    "narocnost": 4.5,
+    "prinosnost": 2.8,
+    "index": 0.62
+  },
+  {
+    "cislo": 77,
+    "kategorie": "HNS a vojenská mobilita",
+    "opatreni": "Mezirezortní koordinace a zákon o podpoře hostitelské země",
+    "popis": "Zajistit stálou mezirezortní koordinaci HNS, zvážit legislativní rámec HNS vč. plánů pro zapojení civilistů do HNS.",
+    "zeme": "Litva – Mobilization and HNS / MoD (https://kam.lt/en/mobilization-and-civil-resistance-department-under-the-mod-2/)",
+    "narocnost": 3.5,
+    "prinosnost": 2.4,
+    "index": 0.69
+  },
+  {
+    "cislo": 78,
+    "kategorie": "HNS a vojenská mobilita",
+    "opatreni": "Civilní připravenost na poskytování HNS",
+    "popis": "Lokální autority a privátní společnosti mají vědět, co se od nich očekává, za jakých podmínek a jak to bude dohodnuto. Opatření má propojit civilní kapacity s plánováním hostitelské podpory tak, aby bylo předem jasné, kdo poskytuje jakou službu a za jakých podmínek.",
+    "zeme": "Litva – Mobilization and HNS / MoD (https://kam.lt/en/mobilization-and-civil-resistance-department-under-the-mod-2/)",
+    "narocnost": 3.5,
+    "prinosnost": 2.6,
+    "index": 0.74
+  }
+];
 
     // ------------------------------------------------------------------
     // 2) ZÁKLADNÍ NASTAVENÍ
@@ -390,9 +1106,24 @@
 
     const categories = Array.from(new Set(data.map(d => d.kategorie)));
 
-    const color = d3.scaleOrdinal()
-      .domain(categories)
-      .range(["#003C71", "#EF3340", "#2E7D32"]);
+    const categoryColors = {
+      "Vzdělávání a kompetence společnosti": "#003C71",
+      "Připravenost dospělé populace": "#EF3340",
+      "Lokální komunity a leadership": "#2E7D32",
+      "Firmy a hospodářská mobilizace": "#F9A825",
+      "Kritická infrastruktura a ukrytí": "#6A1B9A",
+      "Ozbrojené složky a mobilizační kapacity": "#00838F",
+      "Informační odolnost a krizová komunikace": "#C2185B",
+      "Zásoby, logistika a soběstačnost": "#5D4037",
+      "Lokální huby, evakuace a místní odpovědnost": "#7CB342",
+      "Kritické služby a 7BLR": "#3949AB",
+      "Digitalizace a datová kontinuita": "#F4511E",
+      "Spolupráce a systémová integrace": "#546E7A",
+      "Legislativa, governance a plánování": "#8E24AA",
+      "HNS a vojenská mobilita": "#00ACC1"
+};
+
+    const color = d => categoryColors[d] || "#777777";
 
     const state = {
       selectedCategories: new Set(categories),
@@ -481,8 +1212,21 @@
       );
     }
 
-    // Pokud mají některé body stejné hodnoty, mírně je opticky odsadíme,
-    // aby nebyl jeden úplně schovaný pod druhým.
+    // Stabilní jitter mírně opticky odsadí všechny body, aby se méně překrývaly.
+    // Jitter je deterministický: při každém načtení zůstane stejný.
+    function deterministicJitter(seed, axis) {
+      const str = `${seed}|${axis}`;
+      let hash = 0;
+
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+
+      const normalized = Math.abs(hash % 1000) / 999;
+      return (normalized - 0.5) * 14; // rozsah cca -7 až +7 px
+    }
+
     function addOffsets(rows) {
       const grouped = d3.group(rows, d => `${d.narocnost}|${d.prinosnost}`);
 
@@ -490,14 +1234,18 @@
         const n = group.length;
 
         group.forEach((d, i) => {
+          const seed = d.cislo ?? d.opatreni;
+          const baseX = deterministicJitter(seed, "x");
+          const baseY = deterministicJitter(seed, "y");
+
           if (n === 1) {
-            d.offsetX = 0;
-            d.offsetY = 0;
+            d.offsetX = baseX;
+            d.offsetY = baseY;
           } else {
             const angle = (2 * Math.PI * i) / n;
             const radius = 8;
-            d.offsetX = Math.cos(angle) * radius;
-            d.offsetY = Math.sin(angle) * radius;
+            d.offsetX = baseX + Math.cos(angle) * radius;
+            d.offsetY = baseY + Math.sin(angle) * radius;
           }
         });
       });
@@ -505,10 +1253,20 @@
       return rows;
     }
 
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;")
+        .replaceAll("\n", "<br>");
+    }
+
     function formatNumber(value) {
       return Number(value).toLocaleString("cs-CZ", {
         minimumFractionDigits: 1,
-        maximumFractionDigits: 1
+        maximumFractionDigits: 2
       });
     }
 
@@ -624,7 +1382,7 @@
 
       // Body
       const points = g.selectAll(".point")
-        .data(filtered, d => d.opatreni)
+        .data(filtered, d => d.cislo)
         .join("circle")
         .attr("class", "point")
         .attr("cx", d => x(d.narocnost) + d.offsetX)
@@ -641,7 +1399,7 @@
         })
           
         .on("mouseenter", function(event, d) {
-          points.classed("is-muted", p => p.opatreni !== d.opatreni);
+          points.classed("is-muted", p => p.cislo !== d.cislo);
 
           d3.select(this)
             .classed("is-hovered", true)
@@ -657,6 +1415,8 @@
               <div>Kategorie: ${d.kategorie}</div>
               <div>Náročnost: ${formatNumber(d.narocnost)}</div>
               <div>Přínosnost: ${formatNumber(d.prinosnost)}</div>
+              <div>Index: ${d.index === null ? "N/A" : formatNumber(d.index)}</div>
+              ${d.zeme ? `<div class="tooltip-note">Inspirace: ${escapeHtml(d.zeme)}</div>` : ""}
             `);
         })
         .on("mousemove", function(event) {
