@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vzdělávání a kompetence společnosti</title>
+  <style>
+    :root {
+      --cat-bg: #f6f7f9;
+      --cat-card: #ffffff;
+      --cat-border: #d9dde4;
+      --cat-text: #1e293b;
+      --cat-muted: #64748b;
+      --cat-accent: #003C71;
+      --cat-accent-soft: color-mix(in srgb, #003C71 12%, white);
+      --cat-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--cat-bg);
+      color: var(--cat-text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding: 24px;
+    }
+
+    .cat-wrap { max-width: 1120px; margin: 0 auto; }
+    .cat-header { margin-bottom: 18px; }
+    .cat-header h1 { margin: 0 0 8px 0; font-size: 30px; line-height: 1.15; color: var(--cat-accent); }
+    .cat-header p { margin: 0; color: var(--cat-muted); font-size: 15px; line-height: 1.5; max-width: 900px; }
+    .cat-list { display: grid; gap: 14px; }
+    .cat-card { background: var(--cat-card); border: 1px solid var(--cat-border); border-radius: 18px; box-shadow: var(--cat-shadow); overflow: hidden; position: relative; }
+    .cat-summary { list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start; padding: 18px 20px; cursor: pointer; }
+    .cat-summary::-webkit-details-marker { display: none; }
+    .cat-summary::after { content: "▾"; position: absolute; right: 18px; top: 18px; font-size: 18px; color: var(--cat-muted); transition: transform 180ms ease; }
+    .cat-card[open] .cat-summary::after { transform: rotate(180deg); }
+    .cat-summary-text { min-width: 0; padding-right: 24px; }
+    .cat-eyebrow { color: var(--cat-muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+    .cat-summary h3 { margin: 0; font-size: 22px; line-height: 1.2; }
+    .cat-summary-side { display: grid; gap: 8px; align-content: start; padding-right: 28px; }
+    .cat-pill { background: var(--cat-accent-soft); color: var(--cat-accent); border-radius: 999px; padding: 8px 12px; font-size: 13px; font-weight: 700; white-space: nowrap; }
+    .cat-pill--muted { background: #eff2f6; color: #334155; }
+    .cat-content { border-top: 1px solid var(--cat-border); padding: 18px 20px 20px; background: #fcfcfd; }
+    .cat-content-grid { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(360px, 540px); gap: 22px; align-items: start; }
+    .cat-section { margin-bottom: 18px; }
+    .cat-section:last-child { margin-bottom: 0; }
+    .cat-section-title { font-size: 13px; font-weight: 800; color: var(--cat-accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+    .cat-copy p { margin: 0; line-height: 1.6; color: #334155; }
+    .cat-stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .cat-stat { border: 1px solid var(--cat-border); border-radius: 14px; background: #fff; padding: 12px 14px; }
+    .cat-stat-label { font-size: 12px; color: var(--cat-muted); margin-bottom: 6px; }
+    .cat-stat-value { font-size: 24px; font-weight: 800; color: var(--cat-text); line-height: 1; }
+    .cat-scenarios { display: grid; gap: 8px; }
+    .cat-scenario-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 9px 12px; background: #fff; border: 1px solid var(--cat-border); border-radius: 12px; font-size: 14px; }
+    .cat-badge { min-width: 56px; text-align: center; border-radius: 999px; padding: 5px 8px; font-weight: 800; color: #203040; }
+    .cat-viz { border: 1px solid var(--cat-border); background: #fff; border-radius: 16px; padding: 16px; }
+    .cat-viz-note { font-size: 13px; color: var(--cat-muted); margin-bottom: 10px; line-height: 1.45; }
+    .cat-mini-chart { width: 100%; height: auto; display: block; margin-bottom: 12px; }
+    .cat-svg-head { font-size: 11px; fill: #64748b; font-weight: 700; }
+    .cat-svg-label { font-size: 11px; fill: #334155; }
+    .cat-svg-score { font-size: 11px; fill: #334155; font-weight: 700; }
+    .cat-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cat-chip { border-radius: 999px; padding: 6px 10px; font-size: 12px; background: #f1f5f9; color: #334155; border: 1px solid #dbe3ec; }
+    .cat-chip--effort { background: #fff5ee; border-color: #f0d4bf; }
+    .cat-source-list { margin: 0; padding-left: 18px; color: #334155; line-height: 1.55; }
+    .cat-source-list a { color: var(--cat-accent); font-weight: 650; text-decoration: none; }
+    .cat-source-list a:hover { text-decoration: underline; }
+
+    @media (max-width: 900px) {
+      body { padding: 14px; }
+      .cat-summary { grid-template-columns: 1fr; }
+      .cat-summary-side { grid-template-columns: repeat(2, auto); padding-right: 24px; }
+      .cat-content-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .cat-header h1 { font-size: 24px; }
+      .cat-summary h3 { font-size: 19px; }
+      .cat-stat-grid { grid-template-columns: 1fr; }
+      .cat-summary-side { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cat-wrap">
+    <header class="cat-header">
+      <h1>Vzdělávání a kompetence společnosti</h1>
+      <p>
+        Přehled opatření v kategorii <strong>Vzdělávání a kompetence společnosti</strong>. Hodnoty představují průměr ze dvou expertních skórování; přínosnost podle scénářů je průměrná hodnota za danou kombinaci opatření a scénáře.
+      </p>
+    </header>
+
+    <section class="cat-list">
+      
+    <details class="cat-card">
+      <summary class="cat-summary">
+        <div class="cat-summary-text">
+          <div class="cat-eyebrow">Vzdělávání a kompetence společnosti</div>
+          <h3>MŠ: návyk, rozhodování, chování</h3>
+        </div>
+        <div class="cat-summary-side">
+          <div class="cat-pill">Průměrný přínos: 1,8</div>
+          <div class="cat-pill cat-pill--muted">Průměrná náročnost: 2,0</div>
+        </div>
+      </summary>
+      <div class="cat-content">
+        <div class="cat-content-grid">
+          <div class="cat-copy">
+            <div class="cat-section">
+              <div class="cat-section-title">Detail opatření</div>
+              <p>Rozvíjet věku přiměřené aktivity pro připravenost na MU v MŠ zacílené na bezpečné chování, evakuační návyk, spolupráci a reakci na mimořádnou událost. Toto může být formou říkanek, písniček či her. Opatření směřuje na převedení připravenosti mezi běžné součásti života a je určeno prstřednictvím vychovatelů na MŠ dětem na MŠ.</p>
+            </div>
+
+            <div class="cat-stat-grid">
+              <div class="cat-stat">
+                <div class="cat-stat-label">Průměrná náročnost</div>
+                <div class="cat-stat-value">2,0 / 5</div>
+              </div>
+              <div class="cat-stat">
+                <div class="cat-stat-label">Průměrná přínosnost</div>
+                <div class="cat-stat-value">1,8 / 5</div>
+              </div>
+            </div>
+
+            <div class="cat-section">
+              <div class="cat-section-title">Přínosnost podle scénářů</div>
+              <div class="cat-scenarios"><div class="cat-scenario-row"><span>Válečný konflikt</span><span class="cat-badge" style="background:#f4a261">1,5/5</span></div><div class="cat-scenario-row"><span>Epidemie</span><span class="cat-badge" style="background:#f4a261">1,5/5</span></div><div class="cat-scenario-row"><span>Kyberútoky</span><span class="cat-badge" style="background:#e76f51">1/5</span></div><div class="cat-scenario-row"><span>Environmentální pohroma</span><span class="cat-badge" style="background:#f6e08b">3/5</span></div><div class="cat-scenario-row"><span>Blackout</span><span class="cat-badge" style="background:#f4a261">2/5</span></div></div>
+            </div>
+            <div class="cat-section">
+              <div class="cat-section-title">Zdroj</div>
+              <ul class="cat-source-list"><li><a href="https://www.bousai.go.jp/en/" target="_blank" rel="noopener noreferrer">Japonsko – Bousai / disaster prevention</a></li></ul>
+            </div>
+          </div>
+          <div class="cat-viz">
+            <div class="cat-section-title">Přehled skóre</div>
+            <div class="cat-viz-note">Vlevo konstantní průměrná náročnost implementace, vpravo průměrná přínosnost v jednotlivých scénářích. Škála 0–5.</div>
+            
+    <svg viewBox="0 0 560 220" class="cat-mini-chart" role="img" aria-label="Graf náročnosti a přínosnosti opatření MŠ: návyk, rozhodování, chování napříč scénáři.">
+      <line x1="312" y1="8" x2="312" y2="176" stroke="#aeb6c2" stroke-width="1"></line>
+      <text x="247" y="12" text-anchor="middle" class="cat-svg-head">Náročnost</text>
+      <text x="377" y="12" text-anchor="middle" class="cat-svg-head">Přínosnost</text>
+      
+        <text x="138" y="26" text-anchor="end" class="cat-svg-label">Válečný konflikt</text>
+        <rect x="252.0" y="18" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="26" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="18" width="45.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="365.0" y="26" text-anchor="start" class="cat-svg-score">1,5</text>
+        <text x="138" y="60" text-anchor="end" class="cat-svg-label">Epidemie</text>
+        <rect x="252.0" y="52" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="60" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="52" width="45.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="365.0" y="60" text-anchor="start" class="cat-svg-score">1,5</text>
+        <text x="138" y="94" text-anchor="end" class="cat-svg-label">Kyberútoky</text>
+        <rect x="252.0" y="86" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="94" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="86" width="30.0" height="10" rx="5" fill="#e76f51"></rect>
+        <text x="350.0" y="94" text-anchor="start" class="cat-svg-score">1</text>
+        <text x="138" y="128" text-anchor="end" class="cat-svg-label">Environmentální pohroma</text>
+        <rect x="252.0" y="120" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="128" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="120" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="410.0" y="128" text-anchor="start" class="cat-svg-score">3</text>
+        <text x="138" y="162" text-anchor="end" class="cat-svg-label">Blackout</text>
+        <rect x="252.0" y="154" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="162" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="154" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="380.0" y="162" text-anchor="start" class="cat-svg-score">2</text>
+    </svg>
+            <div class="cat-chip-row">
+              <span class="cat-chip cat-chip--effort">Náročnost: 2,0/5</span>
+              <span class="cat-chip">Přínosnost: 1,8/5</span>
+              <span class="cat-chip">Index z průměrů: 0,9</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="cat-card">
+      <summary class="cat-summary">
+        <div class="cat-summary-text">
+          <div class="cat-eyebrow">Vzdělávání a kompetence společnosti</div>
+          <h3>ZŠ: praktické dovednosti</h3>
+        </div>
+        <div class="cat-summary-side">
+          <div class="cat-pill">Průměrný přínos: 2,6</div>
+          <div class="cat-pill cat-pill--muted">Průměrná náročnost: 3,0</div>
+        </div>
+      </summary>
+      <div class="cat-content">
+        <div class="cat-content-grid">
+          <div class="cat-copy">
+            <div class="cat-section">
+              <div class="cat-section-title">Detail opatření</div>
+              <p>Na ZŠ posílit praktickou první pomoc, první psychickou pomoc, reakci na mimořádné události, mediální gramotnost a zapojení do humanitárních aktivit. Důležité je aby žáci věděli, co dělat a byli schopni jednat v základních situacích. Tyto kompetence by měly být posilované na pravidelné bázi a zahrnovat také evaluaci úrovně dosažených kompetencí.</p>
+            </div>
+
+            <div class="cat-stat-grid">
+              <div class="cat-stat">
+                <div class="cat-stat-label">Průměrná náročnost</div>
+                <div class="cat-stat-value">3,0 / 5</div>
+              </div>
+              <div class="cat-stat">
+                <div class="cat-stat-label">Průměrná přínosnost</div>
+                <div class="cat-stat-value">2,6 / 5</div>
+              </div>
+            </div>
+
+            <div class="cat-section">
+              <div class="cat-section-title">Přínosnost podle scénářů</div>
+              <div class="cat-scenarios"><div class="cat-scenario-row"><span>Válečný konflikt</span><span class="cat-badge" style="background:#f6e08b">2,5/5</span></div><div class="cat-scenario-row"><span>Epidemie</span><span class="cat-badge" style="background:#f4a261">2/5</span></div><div class="cat-scenario-row"><span>Kyberútoky</span><span class="cat-badge" style="background:#f4a261">2/5</span></div><div class="cat-scenario-row"><span>Environmentální pohroma</span><span class="cat-badge" style="background:#a8d080">3,5/5</span></div><div class="cat-scenario-row"><span>Blackout</span><span class="cat-badge" style="background:#f6e08b">3/5</span></div></div>
+            </div>
+            <div class="cat-section">
+              <div class="cat-section-title">Zdroj</div>
+              <ul class="cat-source-list"><li><a href="https://disaster.moe.edu.tw/MoeEnglishInfo/Home/AboutProgram" target="_blank" rel="noopener noreferrer">Taiwan – Disaster-resilient schools</a></li><li><a href="https://english.moe.gov.tw/cp-117-22570-F28B7-1.html" target="_blank" rel="noopener noreferrer">Taiwan – MOE disaster/defence education materials</a></li></ul>
+            </div>
+          </div>
+          <div class="cat-viz">
+            <div class="cat-section-title">Přehled skóre</div>
+            <div class="cat-viz-note">Vlevo konstantní průměrná náročnost implementace, vpravo průměrná přínosnost v jednotlivých scénářích. Škála 0–5.</div>
+            
+    <svg viewBox="0 0 560 220" class="cat-mini-chart" role="img" aria-label="Graf náročnosti a přínosnosti opatření ZŠ: praktické dovednosti napříč scénáři.">
+      <line x1="312" y1="8" x2="312" y2="176" stroke="#aeb6c2" stroke-width="1"></line>
+      <text x="247" y="12" text-anchor="middle" class="cat-svg-head">Náročnost</text>
+      <text x="377" y="12" text-anchor="middle" class="cat-svg-head">Přínosnost</text>
+      
+        <text x="138" y="26" text-anchor="end" class="cat-svg-label">Válečný konflikt</text>
+        <rect x="222.0" y="18" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="214.0" y="26" text-anchor="end" class="cat-svg-score">3</text>
+        <rect x="312" y="18" width="75.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="395.0" y="26" text-anchor="start" class="cat-svg-score">2,5</text>
+        <text x="138" y="60" text-anchor="end" class="cat-svg-label">Epidemie</text>
+        <rect x="222.0" y="52" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="214.0" y="60" text-anchor="end" class="cat-svg-score">3</text>
+        <rect x="312" y="52" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="380.0" y="60" text-anchor="start" class="cat-svg-score">2</text>
+        <text x="138" y="94" text-anchor="end" class="cat-svg-label">Kyberútoky</text>
+        <rect x="222.0" y="86" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="214.0" y="94" text-anchor="end" class="cat-svg-score">3</text>
+        <rect x="312" y="86" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="380.0" y="94" text-anchor="start" class="cat-svg-score">2</text>
+        <text x="138" y="128" text-anchor="end" class="cat-svg-label">Environmentální pohroma</text>
+        <rect x="222.0" y="120" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="214.0" y="128" text-anchor="end" class="cat-svg-score">3</text>
+        <rect x="312" y="120" width="105.0" height="10" rx="5" fill="#a8d080"></rect>
+        <text x="425.0" y="128" text-anchor="start" class="cat-svg-score">3,5</text>
+        <text x="138" y="162" text-anchor="end" class="cat-svg-label">Blackout</text>
+        <rect x="222.0" y="154" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="214.0" y="162" text-anchor="end" class="cat-svg-score">3</text>
+        <rect x="312" y="154" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="410.0" y="162" text-anchor="start" class="cat-svg-score">3</text>
+    </svg>
+            <div class="cat-chip-row">
+              <span class="cat-chip cat-chip--effort">Náročnost: 3,0/5</span>
+              <span class="cat-chip">Přínosnost: 2,6/5</span>
+              <span class="cat-chip">Index z průměrů: 0,9</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="cat-card">
+      <summary class="cat-summary">
+        <div class="cat-summary-text">
+          <div class="cat-eyebrow">Vzdělávání a kompetence společnosti</div>
+          <h3>SŠ: povinný předmět k resiliencI</h3>
+        </div>
+        <div class="cat-summary-side">
+          <div class="cat-pill">Průměrný přínos: 2,9</div>
+          <div class="cat-pill cat-pill--muted">Průměrná náročnost: 4,0</div>
+        </div>
+      </summary>
+      <div class="cat-content">
+        <div class="cat-content-grid">
+          <div class="cat-copy">
+            <div class="cat-section">
+              <div class="cat-section-title">Detail opatření</div>
+              <p>Zavést povinný předmět zaměřený na: krizovou odolnost, občanský aktivismus, národní bezpečnost, mobilizaci, boj proti terorismu, leadership, pomoc při katastrofách a prevenci katastrof. Tento předmět by měl vychovávat potenciální komunitní leadery a zvyšovat obecné povědomí o dotčených tématech a jejich propojení s praxí.</p>
+            </div>
+
+            <div class="cat-stat-grid">
+              <div class="cat-stat">
+                <div class="cat-stat-label">Průměrná náročnost</div>
+                <div class="cat-stat-value">4,0 / 5</div>
+              </div>
+              <div class="cat-stat">
+                <div class="cat-stat-label">Průměrná přínosnost</div>
+                <div class="cat-stat-value">2,9 / 5</div>
+              </div>
+            </div>
+
+            <div class="cat-section">
+              <div class="cat-section-title">Přínosnost podle scénářů</div>
+              <div class="cat-scenarios"><div class="cat-scenario-row"><span>Válečný konflikt</span><span class="cat-badge" style="background:#a8d080">4/5</span></div><div class="cat-scenario-row"><span>Epidemie</span><span class="cat-badge" style="background:#f4a261">2/5</span></div><div class="cat-scenario-row"><span>Kyberútoky</span><span class="cat-badge" style="background:#f6e08b">2,5/5</span></div><div class="cat-scenario-row"><span>Environmentální pohroma</span><span class="cat-badge" style="background:#f6e08b">3/5</span></div><div class="cat-scenario-row"><span>Blackout</span><span class="cat-badge" style="background:#f6e08b">3/5</span></div></div>
+            </div>
+            <div class="cat-section">
+              <div class="cat-section-title">Zdroj</div>
+              <ul class="cat-source-list"><li><a href="https://www.mod.gov.lv/en/nozares-politika/comprehensive-state-defence/public-awareness/national-defence-training" target="_blank" rel="noopener noreferrer">Lotyšsko – National Defence Training</a></li><li><a href="https://zpe.gov.pl/szukaj?query=&amp;stage=E2&amp;subject=Edukacja+dla+bezpiecze%C5%84stwa+Szko%C5%82a+podstawowa+4-8" target="_blank" rel="noopener noreferrer">https://zpe.gov.pl/szukaj?query=&amp;stage=E2&amp;subject=Edukacja+dla+bezpiecze%C5%84stwa+Szko%C5%82a+podstawowa+4-8</a></li></ul>
+            </div>
+          </div>
+          <div class="cat-viz">
+            <div class="cat-section-title">Přehled skóre</div>
+            <div class="cat-viz-note">Vlevo konstantní průměrná náročnost implementace, vpravo průměrná přínosnost v jednotlivých scénářích. Škála 0–5.</div>
+            
+    <svg viewBox="0 0 560 220" class="cat-mini-chart" role="img" aria-label="Graf náročnosti a přínosnosti opatření SŠ: povinný předmět k resiliencI napříč scénáři.">
+      <line x1="312" y1="8" x2="312" y2="176" stroke="#aeb6c2" stroke-width="1"></line>
+      <text x="247" y="12" text-anchor="middle" class="cat-svg-head">Náročnost</text>
+      <text x="377" y="12" text-anchor="middle" class="cat-svg-head">Přínosnost</text>
+      
+        <text x="138" y="26" text-anchor="end" class="cat-svg-label">Válečný konflikt</text>
+        <rect x="192.0" y="18" width="120.0" height="10" rx="5" fill="#a8d080"></rect>
+        <text x="184.0" y="26" text-anchor="end" class="cat-svg-score">4</text>
+        <rect x="312" y="18" width="120.0" height="10" rx="5" fill="#a8d080"></rect>
+        <text x="440.0" y="26" text-anchor="start" class="cat-svg-score">4</text>
+        <text x="138" y="60" text-anchor="end" class="cat-svg-label">Epidemie</text>
+        <rect x="192.0" y="52" width="120.0" height="10" rx="5" fill="#a8d080"></rect>
+        <text x="184.0" y="60" text-anchor="end" class="cat-svg-score">4</text>
+        <rect x="312" y="52" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="380.0" y="60" text-anchor="start" class="cat-svg-score">2</text>
+        <text x="138" y="94" text-anchor="end" class="cat-svg-label">Kyberútoky</text>
+        <rect x="192.0" y="86" width="120.0" height="10" rx="5" fill="#a8d080"></rect>
+        <text x="184.0" y="94" text-anchor="end" class="cat-svg-score">4</text>
+        <rect x="312" y="86" width="75.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="395.0" y="94" text-anchor="start" class="cat-svg-score">2,5</text>
+        <text x="138" y="128" text-anchor="end" class="cat-svg-label">Environmentální pohroma</text>
+        <rect x="192.0" y="120" width="120.0" height="10" rx="5" fill="#a8d080"></rect>
+        <text x="184.0" y="128" text-anchor="end" class="cat-svg-score">4</text>
+        <rect x="312" y="120" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="410.0" y="128" text-anchor="start" class="cat-svg-score">3</text>
+        <text x="138" y="162" text-anchor="end" class="cat-svg-label">Blackout</text>
+        <rect x="192.0" y="154" width="120.0" height="10" rx="5" fill="#a8d080"></rect>
+        <text x="184.0" y="162" text-anchor="end" class="cat-svg-score">4</text>
+        <rect x="312" y="154" width="90.0" height="10" rx="5" fill="#f6e08b"></rect>
+        <text x="410.0" y="162" text-anchor="start" class="cat-svg-score">3</text>
+    </svg>
+            <div class="cat-chip-row">
+              <span class="cat-chip cat-chip--effort">Náročnost: 4,0/5</span>
+              <span class="cat-chip">Přínosnost: 2,9/5</span>
+              <span class="cat-chip">Index z průměrů: 0,7</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="cat-card">
+      <summary class="cat-summary">
+        <div class="cat-summary-text">
+          <div class="cat-eyebrow">Vzdělávání a kompetence společnosti</div>
+          <h3>VŠ: možnost DVC/vstupu do AZ za kredity</h3>
+        </div>
+        <div class="cat-summary-side">
+          <div class="cat-pill">Průměrný přínos: 1,9</div>
+          <div class="cat-pill cat-pill--muted">Průměrná náročnost: 2,0</div>
+        </div>
+      </summary>
+      <div class="cat-content">
+        <div class="cat-content-grid">
+          <div class="cat-copy">
+            <div class="cat-section">
+              <div class="cat-section-title">Detail opatření</div>
+              <p>Plošně umožnit studentům VŠ získat kredity za absolvování DVC, či zapojení do AZ. Nyní je toto možné u vybraných VŠ, které toto domlouvají na individuální bázi, ale není to plošné opatření napříč všemi VŠ.</p>
+            </div>
+
+            <div class="cat-stat-grid">
+              <div class="cat-stat">
+                <div class="cat-stat-label">Průměrná náročnost</div>
+                <div class="cat-stat-value">2,0 / 5</div>
+              </div>
+              <div class="cat-stat">
+                <div class="cat-stat-label">Průměrná přínosnost</div>
+                <div class="cat-stat-value">1,9 / 5</div>
+              </div>
+            </div>
+
+            <div class="cat-section">
+              <div class="cat-section-title">Přínosnost podle scénářů</div>
+              <div class="cat-scenarios"><div class="cat-scenario-row"><span>Válečný konflikt</span><span class="cat-badge" style="background:#a8d080">4/5</span></div><div class="cat-scenario-row"><span>Epidemie</span><span class="cat-badge" style="background:#e76f51">1/5</span></div><div class="cat-scenario-row"><span>Kyberútoky</span><span class="cat-badge" style="background:#f4a261">1,5/5</span></div><div class="cat-scenario-row"><span>Environmentální pohroma</span><span class="cat-badge" style="background:#f4a261">1,5/5</span></div><div class="cat-scenario-row"><span>Blackout</span><span class="cat-badge" style="background:#f4a261">1,5/5</span></div></div>
+            </div>
+            <div class="cat-section">
+              <div class="cat-section-title">Zdroj</div>
+              <p>Výsledek expertních diskuzí / vlastní návrh bez uvedené zahraniční inspirace.</p>
+            </div>
+          </div>
+          <div class="cat-viz">
+            <div class="cat-section-title">Přehled skóre</div>
+            <div class="cat-viz-note">Vlevo konstantní průměrná náročnost implementace, vpravo průměrná přínosnost v jednotlivých scénářích. Škála 0–5.</div>
+            
+    <svg viewBox="0 0 560 220" class="cat-mini-chart" role="img" aria-label="Graf náročnosti a přínosnosti opatření VŠ: možnost DVC/vstupu do AZ za kredity napříč scénáři.">
+      <line x1="312" y1="8" x2="312" y2="176" stroke="#aeb6c2" stroke-width="1"></line>
+      <text x="247" y="12" text-anchor="middle" class="cat-svg-head">Náročnost</text>
+      <text x="377" y="12" text-anchor="middle" class="cat-svg-head">Přínosnost</text>
+      
+        <text x="138" y="26" text-anchor="end" class="cat-svg-label">Válečný konflikt</text>
+        <rect x="252.0" y="18" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="26" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="18" width="120.0" height="10" rx="5" fill="#a8d080"></rect>
+        <text x="440.0" y="26" text-anchor="start" class="cat-svg-score">4</text>
+        <text x="138" y="60" text-anchor="end" class="cat-svg-label">Epidemie</text>
+        <rect x="252.0" y="52" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="60" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="52" width="30.0" height="10" rx="5" fill="#e76f51"></rect>
+        <text x="350.0" y="60" text-anchor="start" class="cat-svg-score">1</text>
+        <text x="138" y="94" text-anchor="end" class="cat-svg-label">Kyberútoky</text>
+        <rect x="252.0" y="86" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="94" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="86" width="45.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="365.0" y="94" text-anchor="start" class="cat-svg-score">1,5</text>
+        <text x="138" y="128" text-anchor="end" class="cat-svg-label">Environmentální pohroma</text>
+        <rect x="252.0" y="120" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="128" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="120" width="45.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="365.0" y="128" text-anchor="start" class="cat-svg-score">1,5</text>
+        <text x="138" y="162" text-anchor="end" class="cat-svg-label">Blackout</text>
+        <rect x="252.0" y="154" width="60.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="244.0" y="162" text-anchor="end" class="cat-svg-score">2</text>
+        <rect x="312" y="154" width="45.0" height="10" rx="5" fill="#f4a261"></rect>
+        <text x="365.0" y="162" text-anchor="start" class="cat-svg-score">1,5</text>
+    </svg>
+            <div class="cat-chip-row">
+              <span class="cat-chip cat-chip--effort">Náročnost: 2,0/5</span>
+              <span class="cat-chip">Přínosnost: 1,9/5</span>
+              <span class="cat-chip">Index z průměrů: 1,0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    </section>
+  </div>
+</body>
+</html>
